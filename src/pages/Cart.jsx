@@ -1,6 +1,19 @@
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import PizzaBlock from '../components/Cart/PizzaBlock/PizzaBlock';
+import { clearItems } from '../redux/slices/cartSlice';
+import { CartEmpty } from '../components/Cart/CartEmpty/CartEmpty';
 
 const Cart = () => {
+   const { totalPrice, totalCount, items } = useSelector((state) => state.cart);
+   const dispatch = useDispatch();
+
+   const onClickClean = () => {
+      dispatch(clearItems());
+   };
+
+   if (!totalPrice) return <CartEmpty />;
+
    return (
       <div className="container container--cart">
          <div className="cart">
@@ -33,7 +46,7 @@ const Cart = () => {
                   </svg>
                   Корзина
                </h2>
-               <div onClick={() => {}} className="cart__clear">
+               <div onClick={onClickClean} className="cart__clear">
                   <svg
                      width="20"
                      height="20"
@@ -69,22 +82,19 @@ const Cart = () => {
                   <span>Очистить корзину</span>
                </div>
             </div>
-            <div className="content__items">
-               <div>Пицца</div>
-               <div>Пицца</div>
-               <div>Пицца</div>
-               <div>Пицца</div>
-               <div>Пицца</div>
-               <div>Пицца</div>
-               <div>Пицца</div>
+
+            <div className="content__items content__items--cart">
+               {items?.map((obj) => (
+                  <PizzaBlock key={obj.id} pizza={obj} />
+               ))}
             </div>
             <div className="cart__bottom">
                <div className="cart__bottom-details">
                   <span>
-                     Всего пицц: <b>{} шт.</b>{' '}
+                     Всего пицц: <b>{totalCount} шт.</b>
                   </span>
                   <span>
-                     Сумма заказа: <b>{} ₽</b>{' '}
+                     Сумма заказа: <b>{totalPrice} ₽</b>
                   </span>
                </div>
                <div className="cart__bottom-buttons">
