@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+// react
+import { Route, Routes } from 'react-router-dom';
+// pages
+import Home from './pages/Home';
+// components
+import Header from './components/Header/Header';
+import NotFound from './pages/NotFound';
+import Cart from './pages/Cart';
+import { useState } from 'react';
+// TO DO
+// 1. часть стилей перенести в modules.scss
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+   const [searchValue, setSearchValue] = useState('');
+
+   return (
+      <div className="wrapper">
+         <Header searchValue={searchValue} setSearchValue={setSearchValue} />
+
+         <div className="content">
+            <div className="container">
+               <Routes>
+                  <Route path="" element={<Home searchValue={searchValue} />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/404" element={<NotFound />} />
+               </Routes>
+            </div>
+         </div>
+      </div>
+   );
 }
 
 export default App;
